@@ -2,6 +2,7 @@ const items = document.querySelector(".my-5");
 const submitFormButton = document.querySelector(".input-group-append").querySelector("button");
 const inputField = document.getElementById("itemInput");
 const clearButton = document.getElementById("clear-list");
+const feedback = document.querySelector(".feedback");
 
 Storage.prototype.setObj = function (key, obj) {
     return this.setItem(key, JSON.stringify(obj))
@@ -163,7 +164,15 @@ const addItem = () => {
         completeBtn.addEventListener("click", markComplete);
         editBtn.addEventListener("click", editEntry);   
 
-    }
+    } else {
+        feedback.innerHTML = "Please add an item to your list!"
+        setTimeout(() => {
+            feedback.style.display = "none";
+            feedback.classList.remove("showItem", "alert-danger", "text-capitalize");
+        }, 5000);
+        feedback.style.display = "block";
+        feedback.classList.add("showItem", "alert-danger", "text-capitalize");
+    };
 };
 
 
