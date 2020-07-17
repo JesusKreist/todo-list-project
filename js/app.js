@@ -14,6 +14,7 @@ let counter = 0;
 let todoList;
 let complete = 0;
 let state;
+let divArray = [];
 
 //added comment
 
@@ -22,23 +23,20 @@ let state;
 
 // add items from the localStorage to the todoItems array
 
-// if (localStorage.getObj("todoItems")) {
-//     todoList = localStorage.getObj("todoItems");
-// } else {
-//     todoList = {};
-// };
 
 localStorage.getObj("todoItems") ? todoList = localStorage.getObj("todoItems") : todoList = {};
 localStorage.getObj("state") ? state = localStorage.getObj("state") : state = {};
-// console.log(state);
 
 
 // add the html stored in the values of the todoList object to the document body.
 for (let i of Object.values(todoList)) {
     items.insertAdjacentHTML("beforebegin", i);
+    // console.log(i);
+    divArray.push(i)
 };
+// console.log(divArray);
 
-console.log(Object.keys(state).length)
+// console.log(Object.keys(state).length)
 
 if (Object.keys(state).length > 0) {
     for (let i of Object.keys(state)) {
@@ -46,13 +44,13 @@ if (Object.keys(state).length > 0) {
         let taskState = state[i];
         console.log(taskState);
         if (taskState === 1) {
-            console.log("It's pending now!");
+            // console.log("It's pending now!");
             workingDocument.classList.add("completed");
-            console.log("It's done now!");
+            // console.log("It's done now!");
         } else {
-            console.log("It's done now!");
+            // console.log("It's done now!");
             workingDocument.classList.remove("completed");
-            console.log("Resetting to pending");
+            // console.log("Resetting to pending");
         };
     };
 };
@@ -104,6 +102,7 @@ const markComplete = event => {
         taskState--;
     };
     state[entry.id] = taskState;
+    localStorage.setObj("todoItems", todoList);
     localStorage.setObj("state", state);
 };
 
