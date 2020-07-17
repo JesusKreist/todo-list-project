@@ -1,6 +1,7 @@
 const items = document.querySelector(".my-5");
 const submitFormButton = document.querySelector(".input-group-append").querySelector("button");
 const inputField = document.getElementById("itemInput");
+const clearButton = document.getElementById("clear-list");
 
 Storage.prototype.setObj = function (key, obj) {
     return this.setItem(key, JSON.stringify(obj))
@@ -10,25 +11,86 @@ Storage.prototype.getObj = function (key) {
 }
 
 let counter = 0;
-let todoItems = {};
-let addedItems = [];
+
+let idArray = []
+let todoItems = [];
+
+// add items from the localStorage to the todoItems array
+for (let key in localStorage) {
+    if (!localStorage.hasOwnProperty(key)) {
+        continue;
+    }
+    let newHTML = localStorage.getItem(key);
+    todoItems.push(newHTML);
+    idArray.push(key);
+};
+
+// add the corresponding items in the array to the document body
+todoItems.forEach(e => {
+    items.insertAdjacentHTML("beforebegin", e);
+})
+
+
+
+// console.log(todoItems);
+
+
+
+const clearAll = () => {
+    localStorage.clear();
+    for (let elem of idArray) {
+        workingDocument = document.getElementById(elem);
+        document.getElementById(elem).remove();
+        console.log(workingDocument);
+        delete workingDocument;
+    };
+    idArray = [];
+    todoItems = [];
+}
+
 
 
 const deleteEntry = event => {
-    // console.log();
+    let entry = event.target.parentNode.parentNode.parentNode;
+    // entry.remove()
+    console.log(idArray);
+    console.log(entry);
+    idArray = idArray.filter(e => e !== entry.id);
+    console.log(idArray)
+    // delete entry;
 };
+
+complete = 0
 
 const markComplete = event => {
     let text = event.target.parentNode.parentNode.parentNode.firstElementChild;
-    console.log(text);
-    }
     
-
+    if (complete === 0) {
+        console.log("It's off")
+        text.classList.add("completed");
+        complete++
+    } else {
+        console.log("It's on")
+        text.classList.remove("completed");
+        complete--
+    }
 };
 
 const editEntry = event => {
+    let entry = event.target.parentNode.parentNode.parentNode.firstElementChild;
+    inputField.value = entry.innerHTML;
 
 };
+
+
+idArray.forEach(e => {
+    const deleteBtn = document.getElementById(e).querySelector(".delete-item");
+    deleteBtn.onclick = deleteEntry;
+    const completeBtn = document.getElementById(e).querySelector(".complete-item");
+    completeBtn.onclick = markComplete;
+    const editBtn = document.getElementById(e).querySelector(".edit-item");
+    editBtn.addEventListener("click", editEntry);
+})
 
 
 
@@ -48,18 +110,19 @@ const addItem = () => {
 </div>`
         counter++
         // add the item to the local storage
-        localStorage.setItem(itemId, newItem)
+        idArray.push(itemId);
+        todoItems.push(newItem);
         inputField.value = "";
+        localStorage.setItem(itemId, newItem);
         // check if the item is in the document, if it's not... delete it.
-        let checkDocument = document.getElementById(itemId);
-        if (!checkDocument) {
-            items.insertAdjacentHTML("afterend", newItem);
-        };
+        // let checkDocument = document.getElementById(itemId);
+        items.insertAdjacentHTML("beforebegin", newItem);
         const deleteBtn = document.getElementById(itemId).querySelector(".delete-item");
         deleteBtn.onclick = deleteEntry;
         const completeBtn = document.getElementById(itemId).querySelector(".complete-item");
         completeBtn.onclick = markComplete;
-        
+        const editBtn = document.getElementById(itemId).querySelector(".edit-item");
+        editBtn.addEventListener("click", editEntry);      
 
     }
 };
@@ -76,16 +139,6 @@ const testSubmit = event => {
 
 
 submitFormButton.addEventListener("click", testSubmit);
+clearButton.addEventListener("click", clearAll);
 
 
-
-for (let key in localStorage) {
-    if (!localStorage.hasOwnProperty(key)) {
-        continue;
-    }
-    let newHTML = localStorage.getItem(key);
-    let idInDocument = document.getElementById(key);
-    if (!idInDocument) {
-        items.insertAdjacentHTML("afterend", newHTML)
-    }
-}
