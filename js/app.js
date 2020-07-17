@@ -10,7 +10,6 @@ Storage.prototype.getObj = function (key) {
     return JSON.parse(this.getItem(key))
 }
 
-let counter = 0;
 let todoList;
 let complete = 0;
 let state;
@@ -26,7 +25,7 @@ let divArray = [];
 
 localStorage.getObj("todoItems") ? todoList = localStorage.getObj("todoItems") : todoList = {};
 localStorage.getObj("state") ? state = localStorage.getObj("state") : state = {};
-
+localStorage.getObj("counter") ? counter = localStorage.getObj("counter") : counter = 0;
 
 // add the html stored in the values of the todoList object to the document body.
 for (let i of Object.values(todoList)) {
@@ -151,6 +150,7 @@ const addItem = () => {
         inputField.value = "";
         localStorage.setObj("todoItems", todoList);
         localStorage.setObj("state", state);
+        localStorage.setObj("counter", counter);
         // check if the item is in the document, if it's not... delete it.
         // let checkDocument = document.getElementById(itemId);
         items.insertAdjacentHTML("beforebegin", newItem);
