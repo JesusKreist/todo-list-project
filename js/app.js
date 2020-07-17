@@ -21,17 +21,16 @@ let state;
 
 // add items from the localStorage to the todoItems array
 
-if (localStorage.getObj("todoItems")) {
-    todoList = localStorage.getObj("todoItems");
-} else {
-    todoList = {};
-};
+// if (localStorage.getObj("todoItems")) {
+//     todoList = localStorage.getObj("todoItems");
+// } else {
+//     todoList = {};
+// };
 
-if (localStorage.getObj("state")) {
-    state = localStorage.getObj("todoItems");
-} else {
-    state = {};
-};
+localStorage.getObj("todoItems") ? todoList = localStorage.getObj("todoItems") : todoList = {};
+localStorage.getObj("state") ? state = localStorage.getObj("state") : state = {};
+// console.log(state);
+
 
 // add the html stored in the values of the todoList object to the document body.
 
