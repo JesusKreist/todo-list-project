@@ -105,7 +105,7 @@ const markComplete = event => {
     localStorage.setObj("state", state);
 };
 
-
+// event handler function to edit the entry
 const editEntry = event => {
     let entry = event.target.parentNode.parentNode.parentNode.firstElementChild;
     inputField.value = entry.innerHTML;
@@ -118,13 +118,13 @@ const editEntry = event => {
     localStorage.setObj("state", state);
 };
 
-
+// loop through the keys of the todoList object and wire up event listeners for their div entries
 for (let e of Object.keys(todoList)) {
-    const deleteBtn = document.getElementById(e).querySelector(".delete-item");
-    deleteBtn.onclick = deleteEntry;
-    const completeBtn = document.getElementById(e).querySelector(".complete-item");
-    completeBtn.onclick = markComplete;
+    const deleteBtn = document.getElementById(e).querySelector(".delete-item");    
+    const completeBtn = document.getElementById(e).querySelector(".complete-item");    
     const editBtn = document.getElementById(e).querySelector(".edit-item");
+    deleteBtn.addEventListener("click", deleteEntry);
+    completeBtn.addEventListener("click", markComplete);
     editBtn.addEventListener("click", editEntry);
 };
 
@@ -143,23 +143,25 @@ const addItem = () => {
         <a href="#" class="delete-item item-icon"><i class="far fa-times-circle"></i></a>
     </div>
 </div>`
-        counter++
-        // add the item to the local storage
+        // increment counter, add the new id to the todoList object, add the on state to the state object
+        // reset the input filed value
+        counter++        
         todoList[itemId] = newItem;
         state[itemId]  = 0;
         inputField.value = "";
+        // add the items to the local storage
         localStorage.setObj("todoItems", todoList);
         localStorage.setObj("state", state);
         localStorage.setObj("counter", counter);
-        // check if the item is in the document, if it's not... delete it.
-        // let checkDocument = document.getElementById(itemId);
+        // add the new html to the DOM 
         items.insertAdjacentHTML("beforebegin", newItem);
+        // get the new buttons from the newly inserted html and wire up the event listeners
         const deleteBtn = document.getElementById(itemId).querySelector(".delete-item");
-        deleteBtn.onclick = deleteEntry;
         const completeBtn = document.getElementById(itemId).querySelector(".complete-item");
-        completeBtn.onclick = markComplete;
         const editBtn = document.getElementById(itemId).querySelector(".edit-item");
-        editBtn.addEventListener("click", editEntry);      
+        deleteBtn.addEventListener("click", deleteEntry);
+        completeBtn.addEventListener("click", markComplete);
+        editBtn.addEventListener("click", editEntry);   
 
     }
 };
