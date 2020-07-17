@@ -96,18 +96,6 @@ for (let e of Object.keys(todoList)) {
     editBtn.addEventListener("click", editEntry);
 };
 
-
-// idArray.forEach(e => {
-//     const deleteBtn = document.getElementById(e).querySelector(".delete-item");
-//     deleteBtn.onclick = deleteEntry;
-//     const completeBtn = document.getElementById(e).querySelector(".complete-item");
-//     completeBtn.onclick = markComplete;
-//     const editBtn = document.getElementById(e).querySelector(".edit-item");
-//     editBtn.addEventListener("click", editEntry);
-// })
-
-
-
 const addItem = () => {
     let newEntry = inputField.value;
     // check if new entry is not empty
